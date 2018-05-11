@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         itemViews = new ArrayList<>();
 
         textView.setY(-60);
-        textView.setX(20);
+        textView.setX(40);
     }
 
 
@@ -133,7 +133,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                textView.setText("I                  U");
+                mImageView.setScaleX(2.0f);
+                mImageView.setScaleY(2.0f);
+                textView.setText("I         U");
+                textView.setTextSize(50);
                 textView.setTextColor(Color.parseColor("#FFE15A52"));
             }
         });
