@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description :  心形图案平布采点 工具类
+ * Description :  心形图案采点 工具类
  * <p/>
  * Created : TIAN FENG
  * Date : 2018/5/11
@@ -17,6 +17,7 @@ public class Utils {
 
     private static final float scal = 2.0f;
 
+    // 中心点
     public static final Point point = new Point(ScreenUtils.getScreenWidth() / 2-20,ScreenUtils.getScreenHeight() / 2-100);
 
     /**

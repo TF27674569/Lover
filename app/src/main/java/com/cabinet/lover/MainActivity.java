@@ -45,23 +45,34 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void init() {
+        // 根容器
         loverContainer = (ViewGroup) getWindow().getDecorView();
+        // 起始点所在view
         mImageView = findViewById(R.id.imageView);
+        // 文本显示
         textView = findViewById(R.id.textView);
+        // 心形采样点
         points = Utils.getPoints();
+        // 事件处理
         mImageView.setOnTouchListener(this);
+        // TODO view集合后续可做view动画
         itemViews = new ArrayList<>();
 
+        // 调整位置
         textView.setY(-60);
         textView.setX(40);
     }
 
-
+    /**
+     * 启动动画
+     */
     private void start() {
-        handler.postDelayed(runnable, 80);
+        // 200ms 延时
+        handler.postDelayed(runnable, 200);
     }
 
 
+    // 执行体
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -89,9 +100,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             int index = (int) (Math.random() * (points.size()));
             Point remove = points.remove(index);
 
-            // 贝赛尔曲线
+            // 贝赛尔曲线动画
             ValueAnimator animator = ValueAnimator.ofObject(new Bezier(new Point(location[0], location[1]), remove), new Point(location[0], location[1]), remove);
+            // 时间
             animator.setDuration(TIMER);
+            // 轨迹监听
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -115,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         final int[] location = new int[2];
         mImageView.getLocationOnScreen(location);
-        Log.e("TAG", "location ( " + location[0] + " , " + +location[1] + " )");
         ValueAnimator animator = ValueAnimator.ofObject(new Bezier(new Point(location[0], location[1]), Utils.point), new Point(location[0], location[1]), Utils.point);
         animator.setStartDelay(TIMER);
         animator.setDuration(TIMER);
@@ -125,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Point value = (Point) animation.getAnimatedValue();
                 mImageView.setX(value.x-20);
                 mImageView.setY(value.y-60);
-                    Log.e("TAG", "( " + value.x + " , " + +value.y + " )");
             }
         });
 
@@ -153,13 +164,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 isFlag = true;
-                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                Executors
+                        .newSingleThreadExecutor()
+                        .execute(new Runnable() {
                     @Override
                     public void run() {
                         while (isFlag) {
                             try {
-                                Thread.sleep(60);
                                 start();
+                                Thread.sleep(800);
                                 if (points.size()<=0){
                                     break;
                                 }
