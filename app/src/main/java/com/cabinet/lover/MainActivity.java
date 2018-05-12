@@ -17,8 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cabinet.lover.bezier.Bezier;
+import com.cabinet.lover.utils.MathUtils;
 import com.cabinet.lover.utils.ScreenUtils;
 import com.cabinet.lover.utils.Utils;
+import com.cabinet.lover.view.LoveText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Handler handler = new Handler();
     private List<View> itemViews;
     private TextView textView;
+    private LoveText loveText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_main);
         ScreenUtils.init(getApplication());
         init();
+
+        double v = MathUtils.loveDouble();
+
+        Log.e("TAG", "onCreate: "+v );
     }
 
     private void init() {
@@ -51,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mImageView = findViewById(R.id.imageView);
         // 文本显示
         textView = findViewById(R.id.textView);
+        // 函数文本
+        loveText = findViewById(R.id.loveText);
         // 心形采样点
         points = Utils.getPoints();
         // 事件处理
@@ -149,8 +158,51 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 textView.setText("I         U");
                 textView.setTextSize(50);
                 textView.setTextColor(Color.parseColor("#FFE15A52"));
+
+                showAnimationFunc();
             }
         });
+        animator.start();
+
+    }
+
+    /**
+     * 函数动画
+     */
+    private void showAnimationFunc() {
+
+        loveText.setText("0");
+        ValueAnimator animator = ValueAnimator.ofFloat(0, (float) MathUtils.loveDouble());
+        animator.setStartDelay(500);
+        animator.setDuration(2000);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                textView.setVisibility(View.GONE);
+                loveText.setVisibility(View.VISIBLE);
+                mImageView.setVisibility(View.GONE);
+                float value = (float) animation.getAnimatedValue();
+                loveText.setText(value+"");
+            }
+        });
+
+        animator.addListener(new AnimatorListenerAdapter() {
+            /**
+             * {@inheritDoc}
+             *
+             * @param animation
+             */
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loveText.moveFunc();
+                    }
+                }, 1000);
+            }
+        });
+
         animator.start();
 
     }

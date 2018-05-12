@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context="com.cabinet.lover.MainActivity">
 
     <TextView
@@ -13,6 +14,13 @@
         android:textSize="18sp"
         android:text="按住，别松手"
         android:layout_height="wrap_content" />
+
+    <com.cabinet.lover.view.LoveText
+        android:id="@+id/loveText"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"/>
 
     <ImageView
         android:id="@+id/imageView"
